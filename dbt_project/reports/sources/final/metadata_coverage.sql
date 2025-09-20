@@ -1,0 +1,1 @@
+select * from final.metadata_coverage

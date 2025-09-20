@@ -1,0 +1,1 @@
+select distinct EQUIPMENT_ID from staging.stg_datapoints

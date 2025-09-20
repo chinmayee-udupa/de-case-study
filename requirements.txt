@@ -1,0 +1,6 @@
+dbt-core==1.8.2
+dbt-duckdb==1.8.4
+duckdb==1.4.0
+sqlfluff==3.4.2
+dlt
+dbt-colibri

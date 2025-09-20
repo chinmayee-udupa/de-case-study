@@ -1,0 +1,1 @@
+select * from final.daily_lane_equipment_prices

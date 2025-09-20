@@ -1,0 +1,91 @@
+version: 2
+
+models:
+  - name: final_daily_lane_equipment_prices
+    description: "Aggregated daily shipping price statistics (average and median in USD) by lane and equipment type, with data quality checks applied."
+    columns:
+      - name: valid_day
+        data_type: date
+        description: "Calendar date for which the aggregation is calculated. Derived from datapoint contract validity ranges."
+        data_tests:
+          - not_null
+
+      - name: equipment_id
+        data_type: bigint
+        description: "Type of container equipment (1-6) used for the contracts in this lane."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6]
+              quote: false
+
+      - name: origin_port_id
+        data_type: bigint
+        description: "Unique identifier of the origin port for the lane."
+        data_tests:
+          - not_null
+
+      - name: origin_port_code
+        data_type: varchar
+        description: "5-character code of the origin port."
+
+      - name: origin_port_name
+        data_type: varchar
+        description: "Human-readable name of the origin port."
+
+      - name: origin_region_name
+        data_type: varchar
+        description: "Slug of the region the origin port belongs to (from raw.regions)."
+
+      - name: origin_country_code
+        data_type: varchar
+        description: "Two-letter ISO country code of the origin port."
+
+      - name: destination_port_id
+        data_type: bigint
+        description: "Unique identifier of the destination port for the lane."
+        data_tests:
+          - not_null
+
+      - name: destination_port_code
+        data_type: varchar
+        description: "5-character code of the destination port."
+
+      - name: destination_port_name
+        data_type: varchar
+        description: "Human-readable name of the destination port."
+
+      - name: destination_region_name
+        data_type: varchar
+        description: "Slug of the region the destination port belongs to (from raw.regions)."
+
+      - name: destination_country_code
+        data_type: varchar
+        description: "Two-letter ISO country code of the destination port."
+
+      - name: avg_price_usd
+        data_type: double
+        description: "Average daily contract price for the lane and equipment type, converted to USD."
+
+      - name: median_price_usd
+        data_type: double
+        description: "Median daily contract price for the lane and equipment type, converted to USD."
+
+      - name: distinct_companies_count
+        data_type: bigint
+        description: "Number of unique companies (buyers) contributing datapoints to this lane, day, and equipment type."
+
+      - name: distinct_suppliers_count
+        data_type: bigint
+        description: "Number of unique suppliers (sellers) contributing datapoints to this lane, day, and equipment type."
+
+      - name: dq_ok
+        data_type: boolean
+        description: "Data quality flag: TRUE if there are at least 5 distinct companies and 2 distinct suppliers for the lane, day, and equipment type. FALSE otherwise."
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: created
+        data_type: timestamp
+        description: "Timestamp when this aggregated record was created in the final schema."

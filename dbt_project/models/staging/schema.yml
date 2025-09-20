@@ -1,0 +1,191 @@
+version: 2
+
+models:
+  - name: stg_charges
+    description: "Charge components associated with shipping contracts. Summed (after FX conversion) to calculate full datapoint price"
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: datapoint_id
+        data_type: bigint
+        description: "Datapoint/contract ID this charge belongs to (FK to datapoints.d_id)"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_datapoints')
+              field: datapoint_id
+
+      - name: currency
+        data_type: varchar
+        description: "Currency of the charge (three-letter ISO code)"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_exchange_rates')
+              field: currency
+
+      - name: charge_value
+        data_type: bigint
+        description: "Numeric value of the charge component"
+
+      - name: load_date
+        data_type: date
+        description: "Data load_date in YYYY-MM-DD format"
+  - name: stg_datapoints
+    description: "Metadata for ocean shipping contracts (datapoints), identifying valid shipping periods and parties involved"
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: datapoint_id
+        data_type: bigint
+        description: "Unique identifier of the datapoint (shipping contract)"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: created
+        data_type: timestamp
+        description: "Timestamp when the contract was ingested into the system"
+        data_tests:
+          - not_null
+
+      - name: origin_port_id
+        data_type: bigint
+        description: "Port ID of the origin port (FK to ports.pid)"
+
+      - name: destination_port_id
+        data_type: bigint
+        description: "Port ID of the destination port (FK to ports.pid)"
+
+      - name: valid_from
+        data_type: date
+        description: "Start date of the contract's validity period"
+        data_tests:
+          - not_null
+
+      - name: valid_to
+        data_type: date
+        description: "End date of the contract's validity period"
+        data_tests:
+          - not_null
+
+      - name: company_id
+        data_type: bigint
+        description: "ID of the company buying the shipping contract"
+
+      - name: supplier_id
+        data_type: bigint
+        description: "ID of the supplier providing the shipping service"
+
+      - name: equipment_id
+        data_type: bigint
+        description: "ID of the container equipment type (1-6)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6]
+              quote: false
+
+      - name: load_date
+        data_type: date
+        description: "Load date in YYYY-MM-DD format"
+  - name: stg_exchange_rates
+    description: "Daily exchange rates for converting from local currency to USD"
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: exchange_date
+        data_type: date
+        description: "Date for which the exchange rate is valid"
+        data_tests:
+          - not_null
+
+      - name: currency
+        data_type: varchar
+        description: "Three-letter ISO currency code"
+        data_tests:
+          - not_null
+
+      - name: rate
+        data_type: double
+        description: "Rate for converting from the given currency to USD"
+
+      - name: load_date
+        data_type: date
+        description: "Data load_date in YYYY-MM-DD format"
+  - name: stg_ports
+    description: "Information about cargo ports, including unique port IDs, codes, and regional associations."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: port_id
+        data_type: bigint
+        description: "Unique integer ID for the port"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: code
+        data_type: varchar
+        description: "5-character unique port code"
+        data_tests:
+          - not_null
+
+      - name: slug
+        data_type: varchar
+        description: "Name of the port"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_ports')
+              field: slug
+
+      - name: name
+        data_type: varchar
+        description: "Slug identifying which region the port belongs to"
+
+      - name: country
+        data_type: varchar
+        description: "Full name of the country where the port is located"
+
+      - name: country_code
+        data_type: varchar
+        description: "Two-letter country code"
+        data_tests:
+          - not_null
+
+      - name: region_name
+        data_type: varchar
+        description: "Name of the region"
+
+      - name: load_date
+        data_type: date
+        description: "Data load_date in YYYY-MM-DD format"
+  - name: stg_regions
+    description: "Hierarchical definitions of Xeneta shipping regions, including top-level and nested regions."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: slug
+        data_type: varchar
+        description: "Machine-readable identifier of the region (unique)"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: name
+        data_type: varchar
+        description: "Human-readable name of the region"
+
+      - name: parent
+        data_type: varchar
+        description: "Slug of the parent region. Null if this is a top-level region"
+
+      - name: load_date
+        data_type: date
+        description: "Data load_date in YYYY-MM-DD format"

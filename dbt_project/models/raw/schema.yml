@@ -1,0 +1,131 @@
+models:
+  - name: raw_charges
+    description: "Individual charge components associated with each shipping contract (datapoint). These charges, when summed and converted to USD, represent the total price of the contract."
+    columns:
+      - name: d_id
+        data_type: bigint
+        description: "Identifier of the datapoint/contract this charge belongs to (FK to raw_datapoints.d_id)."
+
+      - name: currency
+        data_type: varchar
+        description: "Three-letter ISO currency code of the charge."
+
+      - name: charge_value
+        data_type: bigint
+        description: "Numeric value of the charge in the given currency."
+
+      - name: load_date
+        data_type: date
+        description: "Date on which this record was ingested into the raw layer."
+
+  - name: raw_datapoints
+    description: "Metadata describing ocean shipping contracts (datapoints), including validity periods, equipment types, and involved parties."
+    columns:
+      - name: d_id
+        data_type: bigint
+        description: "Unique identifier for the datapoint (contract)."
+
+      - name: created
+        data_type: timestamp with time zone
+        description: "Timestamp when the contract datapoint was first created/ingested into the system."
+
+      - name: origin_pid
+        data_type: bigint
+        description: "Origin port ID (FK to raw_ports.pid)."
+
+      - name: destination_pid
+        data_type: bigint
+        description: "Destination port ID (FK to raw_ports.pid)."
+
+      - name: valid_from
+        data_type: varchar
+        description: "Start date of the contract validity period."
+
+      - name: valid_to
+        data_type: varchar
+        description: "End date of the contract validity period."
+
+      - name: company_id
+        data_type: bigint
+        description: "Identifier of the company purchasing the shipping contract (buyer)."
+
+      - name: supplier_id
+        data_type: bigint
+        description: "Identifier of the supplier providing shipping services (seller)."
+
+      - name: equipment_id
+        data_type: bigint
+        description: "Type of equipment/container used for the contract (1–6)."
+
+      - name: load_date
+        data_type: date
+        description: "Date on which this record was ingested into the raw layer."
+
+  - name: raw_exchange_rates
+    description: "Daily exchange rates used to convert charges from their local currency into USD."
+    columns:
+      - name: day
+        data_type: varchar
+        description: "Date on which the exchange rate applies."
+
+      - name: currency
+        data_type: varchar
+        description: "Three-letter ISO currency code."
+
+      - name: rate
+        data_type: double
+        description: "Conversion rate: local currency → USD."
+
+      - name: load_date
+        data_type: date
+        description: "Date on which this record was ingested into the raw layer."
+
+  - name: raw_ports
+    description: "Master data about cargo ports, including unique identifiers, codes, names, and country associations."
+    columns:
+      - name: pid
+        data_type: bigint
+        description: "Unique integer identifier for the port."
+
+      - name: code
+        data_type: varchar
+        description: "Unique 5-character port code."
+
+      - name: slug
+        data_type: varchar
+        description: "Machine-readable slug identifying the port's region association."
+
+      - name: name
+        data_type: varchar
+        description: "Human-readable name of the port."
+
+      - name: country
+        data_type: varchar
+        description: "Full name of the country where the port is located."
+
+      - name: country_code
+        data_type: varchar
+        description: "Two-letter ISO country code."
+
+      - name: load_date
+        data_type: date
+        description: "Date on which this record was ingested into the raw layer."
+
+  - name: raw_regions
+    description: "Hierarchical region definitions used by Xeneta to group ports and define pricing lanes."
+    columns:
+      - name: slug
+        data_type: varchar
+        description: "Unique machine-readable identifier for the region."
+
+      - name: name
+        data_type: varchar
+        description: "Human-readable name of the region."
+
+      - name: load_date
+        data_type: date
+        description: "Date on which this record was ingested into the raw layer."
+
+      - name: parent
+        data_type: varchar
+        description: "Slug of the parent region. Null if this is a top-level region."

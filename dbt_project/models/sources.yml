@@ -1,0 +1,11 @@
+# version: 2
+
+# sources:
+#   - name: raw
+#     schema: raw  
+#     tables:
+#       - name: ports
+#       - name: regions
+#       - name: exchange_rates
+#       - name: datapoints
+#       - name: charges

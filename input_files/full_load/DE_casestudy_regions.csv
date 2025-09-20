@@ -1,0 +1,13 @@
+SLUG,NAME,PARENT
+asia,Asia,
+canada_west_coast,Canada West Coast,north_america
+china_east_main,China East Main,china_main
+china_north_main,China North Main,china_main
+china_south_main,China South Main,china_main
+china_main,China Main,far_east_main
+far_east_main,Far East Main,asia
+los_angeles_ports,Los Angeles Ports,us_west_coast
+north_america,North America,
+taiwan_main,Taiwan Main,far_east_main
+us_west_coast,US West Coast,north_america
+washington_ports,Washington Ports,us_west_coast

@@ -1,0 +1,27 @@
+PID,CODE,SLUG,NAME,COUNTRY,COUNTRY_CODE
+681,USTIW,washington_ports,"Tacoma, WA",United States,US
+504,USPDX,north_america,"Portland, OR",United States,US
+587,USOAK,us_west_coast,"Oakland, CA",United States,US
+218,USLGB,los_angeles_ports,"Long Beach, CA",United States,US
+638,USLAX,los_angeles_ports,"Los Angeles, CA",United States,US
+54,USSEA,washington_ports,"Seattle, WA",United States,US
+436,USANC,north_america,"Anchorage, AK",United States,US
+736,TWKHH,taiwan_main,Kaohsiung,Taiwan,TW
+529,TWTXG,taiwan_main,Taichung,Taiwan,TW
+736,TWKHH,taiwan_main,Kaohsiung,Taiwan,TW
+585,TWKEL,taiwan_main,Keelung (Chilung),Taiwan,TW
+723,HKHKG,china_south_main,Hong Kong,Hong Kong,HK
+898,CNYTN,china_south_main,Yantian,China,CN
+806,CNXAM,china_east_main,Xiamen,China,CN
+781,CNTXG,china_north_main,Xingang (Tianjin New Pt),China,CN
+796,CNSGH,china_east_main,Shanghai,China,CN
+764,CNDAL,china_north_main,Dalian,China,CN
+688,CNSHK,china_south_main,Shekou,China,CN
+191,CNQIN,china_east_main,Qingdao,China,CN
+912,CNNSA,china_south_main,Nansha,China,CN
+266,CNNBO,china_east_main,Ningbo,China,CN
+764,CNDAL,china_north_main,Dalian,China,CN
+372,CNSNZ,china_south_main,Shenzhen,China,CN
+153,CNCWN,china_south_main,Chiwan,China,CN
+308,CAVAN,canada_west_coast,"Vancouver, BC",Canada,CA
+678,CAPRR,canada_west_coast,"Prince Rupert, BC",Canada,CA
