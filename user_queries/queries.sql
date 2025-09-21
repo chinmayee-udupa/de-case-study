@@ -174,3 +174,61 @@ FROM final.daily_lane_equipment_prices
 WHERE avg_price_usd IS NULL
 	OR median_price_usd IS NULL
 LIMIT 100;
+
+-- Number of port lanes by equipment:
+SELECT equipment_id, COUNT(DISTINCT port_lane)
+FROM final.daily_lane_equipment_prices
+GROUP BY equipment_id;
+
+-- Number of port lanes by year-month:
+WITH month_year AS (
+	SELECT 
+		EXTRACT(MONTH FROM valid_day) as v_month,
+		EXTRACT(YEAR FROM valid_day) as v_year,
+		*
+	FROM final.daily_lane_equipment_prices
+)
+
+SELECT v_year, v_month, COUNT(DISTINCT port_lane)
+FROM month_year
+GROUP BY v_year, v_month
+ORDER BY v_year, v_month;
+
+-- Number of valid port lanes by year-month:
+WITH month_year AS (
+	SELECT 
+		EXTRACT(MONTH FROM valid_day) as v_month,
+		EXTRACT(YEAR FROM valid_day) as v_year,
+		*
+	FROM final.daily_lane_equipment_prices
+	WHERE dq_ok = true
+)
+
+SELECT v_year, v_month, COUNT(DISTINCT port_lane)
+FROM month_year
+GROUP BY v_year, v_month
+ORDER BY v_year, v_month;
+
+-- Most expensive port lanes:
+SELECT port_lane, avg(avg_price_usd) as avg_price
+FROM final.daily_lane_equipment_prices
+GROUP BY port_lane
+ORDER BY avg_price desc;
+
+-- Ports with most contract days:
+SELECT port_lane, count(valid_day) as valid_days
+FROM final.daily_lane_equipment_prices
+GROUP BY port_lane
+ORDER BY valid_days desc;
+
+-- Ports doing most shipping:
+SELECT origin_port_name, count(destination_port_name) as destination_ports
+FROM final.daily_lane_equipment_prices
+GROUP BY origin_port_name
+ORDER BY destination_ports desc;
+
+-- Ports receiving most shipments:
+SELECT destination_port_name, count(origin_port_name) as origin_ports
+FROM final.daily_lane_equipment_prices
+GROUP BY destination_port_name
+ORDER BY origin_ports desc;
