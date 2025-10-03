@@ -74,6 +74,12 @@ order by EQUIPMENT_ID
   <DropdownOption value=null valueLabel="Select Equipment"/>
 </Dropdown>
 
+```sql lane_prices_by_day
+SELECT
+    *
+FROM final.daily_lane_equipment_prices
+```
+
 <DateInput
     name=date_filtered_prices
     data={lane_prices_by_day}

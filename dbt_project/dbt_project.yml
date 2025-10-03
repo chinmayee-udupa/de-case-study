@@ -39,7 +39,7 @@ models:
     raw:
       +tags: ['raw']
       +schema: raw
-      +materialized: table
+      +materialized: incremental
       +docs:
         node_color: '#BC6C25'
     staging:
